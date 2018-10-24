@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_show_tab.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahavrius <ahavrius@student.unit.ua>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/14 22:35:11 by ahavrius          #+#    #+#             */
+/*   Updated: 2018/09/14 22:35:11 by ahavrius         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_stock_par.h"
+
+void	ft_str(char *s)
+{
+	int k;
+
+	k = 0;
+	while (s[k] != '\0')
+	{
+		write(1, &s[i], 1);
+		k++;
+	}
+
+}
+
+void	ft_show_tab(struct s_stock_par *par)
+{
+	int i;
+
+	i = 0;
+	ft_str(par - > str);
+	while ()
+}

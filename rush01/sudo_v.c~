@@ -1,0 +1,185 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sudoc.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikheroim <ikheroim@student.unit.ua>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/15 18:23:02 by ikheroim          #+#    #+#             */
+/*   Updated: 2018/09/16 15:38:18 by ikheroim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+
+int		check_unic(char *temp_array)
+{
+	int		i;
+	int		n;
+	char	temp;
+
+	i = 0;
+	n = 0;
+	temp_array[9] = '\0';
+	while (i < 9)
+	{
+		temp = temp_array[i];
+		while (n < 9)
+		{
+			if (temp == temp_array[n] && i != n && temp_array[n] != '.')
+				return (0);
+			n++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+char	*make_sector_array(char **argv, int start_y, int start_x)
+{
+	char	*temp;
+	int		iter_temp;
+	int		y;
+	int		x;
+
+	iter_temp = 0;
+	y = start_y;
+	x = start_x;
+	temp = (char*)malloc(10);
+	while (y < (start_y + 3))
+	{
+		while (x < (start_x + 3))
+		{
+			temp[iter_temp] = argv[y][x];
+			iter_temp++;
+			x++;
+		}
+		x = start_x;
+		y++;
+	}
+//printf("SEC: %s RESS: %d\n", temp, check_unic(temp));
+	return (temp);
+}
+
+int		check_sectors(char **argv)
+{
+	int		x;
+	int		y;
+	char	*temp;
+
+	x = 0;
+	y = 0;
+	while (y < 3)
+	{
+		while (x < 3)
+		{
+//printf("Check Sector: !!!Y: %d  X:  %d!!!\n",y ,x);
+			temp = make_sector_array(argv, y * 3, x * 3);
+			if (check_unic(temp) == 0)
+			{
+				return (0);
+			}
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	free(temp);
+	return (1);
+}
+
+int		check_lines(char **argv)
+{
+	int		y;
+	int		x;
+	char	*temp;
+
+	y = 0;
+	x = 0;
+	temp = (char*)malloc(10);
+	while (y < 9)
+	{
+		while (x < 9)
+		{
+			temp[x] = argv[y][x];
+			x++;
+		}
+		x = 0;
+//printf("LINE: %s RESS: %d\n", temp, check_unic(temp));
+		if (check_unic(temp) == 0)
+		{
+			free(temp);
+			return (0);
+		}
+		y++;
+	}
+	free(temp);
+	return (1);
+}
+
+int		check_columns(char **argv)
+{
+	int		y;
+	int		x;
+	char	*temp;
+
+	y = 0;
+	x = 0;
+	temp = (char*)malloc(10);
+	while (x < 9)
+	{
+		while (y < 9)
+		{
+			temp[y] = argv[y][x];
+			y++;
+		}
+		y = 0;
+//printf("COLL: %s RESS: %d\n", temp, check_unic(temp));
+		if (check_unic(temp) == 0)
+		{
+			free(temp);
+			return (0);
+		}
+		x++;
+	}
+	free(temp);
+	return (1);
+}
+
+int		validation(char **str)
+{
+	int		res;
+	int		col;
+	int		lin;
+	int		sec;
+
+	col = check_columns(str);
+	if (col == 0)
+		return (0);
+	lin = check_lines(str);
+	if (lin == 0)
+		return (0);
+	sec = check_sectors(str);
+	if (sec == 0)
+		return (0);
+	return (1);
+}
+
+int		main(void)
+{
+/*	char var[][] = {
+		{'9','.','.','.','7','.','.','.','.'},
+		{'2','.','.','.','9','.','.','5','3'},
+		{'.','6','.','.','1','2','4','.','.'},
+		{'8','4','.','.','.','1','.','9','.'},
+		{'5','.','.','.','.','.','8','.','.'},
+		{'.','3','1','.','.','4','.','.','.'},
+		{'.','.','3','7','.','.','6','8','.'},
+		{'.','9','.','.','5','.','7','4','1'},
+		{'4','7','.','.','.','.','.','.','.'}
+	}
+*/
+	char	*msgs[]={"9...7....","2...9..53",".6..124..","84...1.9.","5.....8..",".31..4...","..37..68.", ".9..5.741","47......."};
+	validation(msgs);
+	return (0);
+}
